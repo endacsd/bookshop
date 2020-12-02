@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    username: root
+    password: zxib204815mysql
+    url: jdbc:mysql://39.105.70.232:7000/ying?useSSL=false&characterEncoding=utf-8
+    driver-class-name: com.mysql.jdbc.Driver
+mybatis:
+  mapper-locations: classpath:mapping/*Mapping.xml
+  type-aliases-package: cn.endacsd.yingbookshop.entity
+
