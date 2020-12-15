@@ -21,4 +21,6 @@ public interface CartService {
     boolean checkBook(int userId, int bookId, int num);
 
     boolean updateBook(Integer bookId,Integer userId,int num);
+
+    boolean checkBookNum(int bookId,int userId,int num);
 }

@@ -6,9 +6,11 @@ import cn.endacsd.yingbookshop.entity.Page;
 import cn.endacsd.yingbookshop.entity.YUser;
 import cn.endacsd.yingbookshop.service.AdminService;
 import cn.endacsd.yingbookshop.service.impl.AdminServiceImpl;
+import cn.endacsd.yingbookshop.utils.FileUtil;
 import cn.endacsd.yingbookshop.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -63,6 +65,13 @@ public class AdminController {
         return adminService.addUser(yUserList);
     }
 
+
+    @RequestMapping(value = "uploadCover", method = RequestMethod.POST)
+    public R fileUploadPic(@RequestParam("file") MultipartFile file){
+        System.out.println(file);
+        String res= FileUtil.fileUpload(file,"/api/public/images/");
+        return R.ok(res);
+    }
 
 
 

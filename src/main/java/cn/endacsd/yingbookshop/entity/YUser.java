@@ -54,7 +54,7 @@ public class YUser implements Serializable {
     @JsonProperty(value = "hide")
     private boolean hide;
     @JsonProperty(value = "surplus")
-    private int surplus;
+    private long surplus;
     @JsonProperty(value = "authority")
     private String authority;
 
@@ -98,11 +98,11 @@ public class YUser implements Serializable {
         this.mail = mail;
     }
 
-    public int getSurplus() {
+    public long getSurplus() {
         return surplus;
     }
 
-    public void setSurplus(int surplus) {
+    public void setSurplus(long surplus) {
         this.surplus = surplus;
     }
 

@@ -9,7 +9,7 @@ import java.util.List;
 
 @Mapper
 public interface OrderMapper {
-    @Select("SELECT * from `order` where userId=#{0}")
+    @Select("SELECT * from `order` where userId=#{0} order by date DESC")
     List<Order> findOrdersByUserId(Integer userId);
 
     @Select("SELECT * from `order` where bookId=#{0}")

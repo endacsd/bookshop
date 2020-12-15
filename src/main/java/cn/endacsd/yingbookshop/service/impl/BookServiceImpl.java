@@ -68,4 +68,12 @@ public class BookServiceImpl implements BookService {
         return PageUtil.getPage(list,page,"book");
 
     }
+
+
+    @Override
+    public boolean checkBookNum(int bookId, int num) {
+        //
+        Book book=bookMapper.findBookById(bookId);
+        return book.getQTY() >= (num);
+    }
 }

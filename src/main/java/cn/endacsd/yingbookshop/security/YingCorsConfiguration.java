@@ -46,13 +46,7 @@ public class YingCorsConfiguration {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new CorsFilter(source));
         // 代表这个过滤器在众多过滤器中级别最高，也就是过滤的时候最先执行
         filterRegistrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+
         return filterRegistrationBean;
     }
-
-
-
-
-
-
-
 }

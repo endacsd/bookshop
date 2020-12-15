@@ -20,5 +20,11 @@ public class Record {
     private Book book;
     private Integer num;
 
-
+    @Override
+    public String toString() {
+        return "Record{" +
+                "book=" + book +
+                ", num=" + num +
+                '}';
+    }
 }

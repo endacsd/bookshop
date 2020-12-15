@@ -34,5 +34,6 @@ build/
 /mvnw
 /mvnw.cmd
 /.mvn
-
+*.png
+*.jpg
 /target/

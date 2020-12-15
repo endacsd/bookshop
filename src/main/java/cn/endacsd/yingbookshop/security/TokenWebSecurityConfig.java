@@ -67,7 +67,6 @@ public class TokenWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addLogoutHandler(new TokenLogoutHandler(tokenManager,redisTemplate)).and()
                 .addFilter(new TokenLoginFilter(authenticationManager(), tokenManager, redisTemplate,yUserMapper))
                 .addFilter(new TokenAuthFilter(authenticationManager(), tokenManager, redisTemplate)).httpBasic()
-
         ;
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
        //http.authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll();

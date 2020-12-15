@@ -120,9 +120,7 @@ public class UserServiceImpl implements UserService {
             //格式有问题
             return R.error("购买失败:"+result);
         }
-
-
-
+        list.stream().forEach(System.out::println);
         //1.2 检查数目
         if(!list.stream().reduce(true,(res,cur)-> res&&cur.getNum()>0 ,(res,cur)->null)){
             return R.error("购买失败:数目错误");
@@ -151,14 +149,15 @@ public class UserServiceImpl implements UserService {
         //
 
         int cost = bookService.getCost(list);
-        int surplus = getUser().getSurplus();
+        long surplus = getUser().getSurplus();
         //1. 扣钱
         yUserMapper.updateSurplusById(surplus-cost,getUserId());
         //2. 扣库存
         bookService.subBooks(list);
         //3. 消除对应的购物车
         if(isCartBooks){
-           removeBook(list);
+           R res=removeBook(list);
+            System.out.println(res);
         }
         //直接购买的情况下,已经加入购物车了
 
@@ -167,6 +166,8 @@ public class UserServiceImpl implements UserService {
 
         return true;
     }
+
+
     /**
      * 直接购买
      **/
@@ -197,6 +198,14 @@ public class UserServiceImpl implements UserService {
             if(!bookService.checkBook(item.getBookId())) return R.error(item.getBookId()+"不存在");
             if(item.getNum()<=0)                        return R.error(item.getBookId()+"数量错误");
         }
+
+        //判断数量是否会太多了
+        if(!itemList.stream().map(item -> cartService.checkBookNum(item.getBookId(),
+                getUserId(),item.getNum())).reduce(true,(res,cur)->res&&cur)){
+            return R.error("数目太多");
+        }
+
+
 
         for(Item item : itemList){
             //
@@ -230,6 +239,7 @@ public class UserServiceImpl implements UserService {
             //验证bookId存在
             removeBook(item.getBookId(),item.getNum());
         }
+
         return R.ok("删除成功");
 
     }
@@ -241,7 +251,7 @@ public class UserServiceImpl implements UserService {
         int num =item.getNum();
         //
         if(num<0) return R.error("设置失败:不能设置为负数!!");
-
+        if(num>1000) return R.error("设置失败:数目太多!!");
         else if(num==0){
             //删除
             return getR(cartService.removeBook(bookId,getUserId()),"设置成功","设置失败");
@@ -259,5 +269,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public R getOrderByPage(Page page) {
         return PageUtil.getPage(orderService.getOrdersListByUserId(getUserId()),page,"order");
+    }
+
+
+    @Override
+    public R setAvatar(String url) {
+        String username=getUsername();
+        YUser user=yUserMapper.findByUsername(username);
+        if(user==null) return R.error("该用户不存在或被禁用");
+
+        user.setAvatar(url);
+        yUserMapper.setUserInfo(user);
+        return R.ok("修改成功");
+    }
+
+    @Override
+    public R commitKey(String key){
+        return R.error();
     }
 }

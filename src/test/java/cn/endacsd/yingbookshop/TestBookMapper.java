@@ -16,4 +16,8 @@ public class TestBookMapper {
     void testCheckBook(){
         System.out.println(bookMapper.findBookById(3));
     }
+    @Test
+    void test(){
+        System.out.println(10000000*1000000);
+    }
 }

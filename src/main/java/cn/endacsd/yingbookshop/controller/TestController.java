@@ -5,14 +5,24 @@ import cn.endacsd.yingbookshop.entity.Item;
 import cn.endacsd.yingbookshop.mapper.BookMapper;
 import cn.endacsd.yingbookshop.mapper.CartMapper;
 import cn.endacsd.yingbookshop.mapper.YUserMapper;
+import cn.endacsd.yingbookshop.utils.FileUtil;
 import cn.endacsd.yingbookshop.utils.R;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Optional;
+@CrossOrigin
 @RestController
 public class TestController {
     @Resource
@@ -57,5 +67,18 @@ public class TestController {
     @RequestMapping("/admin/testRole")
     public R testRole(){
         return R.ok();
+    }
+
+
+
+
+
+
+    @RequestMapping(value = "/test/images/{path}",produces = MediaType.IMAGE_PNG_VALUE)
+    public void getImage(@PathVariable String path, HttpServletResponse response) throws IOException {
+        File file = new File("src/Files/"+path);
+        response.setContentType("image/png");
+        OutputStream os =response.getOutputStream();
+        ImageIO.write(ImageIO.read(new FileInputStream(file)),"png",os);
     }
 }

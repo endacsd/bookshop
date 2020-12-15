@@ -20,4 +20,6 @@ public interface BookService {
     boolean checkBook(Integer bookId);
 
     R findBooksByPage(Page page);
+
+    boolean checkBookNum(int bookId,int num);
 }

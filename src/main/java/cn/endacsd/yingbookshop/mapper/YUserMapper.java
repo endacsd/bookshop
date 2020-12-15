@@ -24,16 +24,20 @@ public interface YUserMapper {
 
     @Insert("insert into user(username,password,mail,authority,surplus,avatar,salt,hide)" +
             "values(#{username},#{password},#{mail},#{authority},#{surplus},#{avatar},#{salt},#{hide})")
-    boolean registerUser(YUser user);
+    Boolean registerUser(YUser user);
 
 
     @Select("select salt from user where username=#{0}")
     String findSaltByUsername(String username);
 
 
+    @Update("update user set avatar=#{avatar} where username=#{username}")
+    Boolean setAvatarByUsername(String username,String avatar);
+
+
 
     @Update("update user set surplus=#{surplus} where id=#{id}")
-    void updateSurplusById(Integer surplus,Integer id);
+    void updateSurplusById(long surplus,int id);
 
 
     @Update("update user set " +

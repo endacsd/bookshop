@@ -34,4 +34,8 @@ public interface UserService {
     R getOrders();
 
     R getOrderByPage(Page page);
+
+    R setAvatar(String url);
+
+    R commitKey(String key);
 }

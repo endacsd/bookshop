@@ -6,11 +6,14 @@ import cn.endacsd.yingbookshop.entity.Record;
 import cn.endacsd.yingbookshop.mapper.BookMapper;
 import cn.endacsd.yingbookshop.mapper.CartMapper;
 import cn.endacsd.yingbookshop.service.CartService;
+import cn.endacsd.yingbookshop.utils.R;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -28,6 +31,8 @@ public class CartServiceImpl implements CartService {
     public boolean addBook(Integer bookId, Integer id,Integer num) {
         //检查是否存在
         Integer prenum = cartMapper.getQTYbyDoubleId(id,bookId);
+
+        if(!checkBookNum(bookId,id,num)) return false;
         if(prenum==null){
             cartMapper.addBook(id,bookId,num);
         }else{
@@ -37,6 +42,10 @@ public class CartServiceImpl implements CartService {
         return true;
 
     }
+
+
+
+
 
     @Override
     public boolean removeBook(Integer bookId, Integer id) {
@@ -75,6 +84,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public boolean subBook(Integer bookId, Integer id, Integer num) {
         Integer prenum = cartMapper.getQTYbyDoubleId(id,bookId);
+        System.out.println(prenum+" "+num);
         if(prenum==null||prenum<num){
             return false;
         }else if(prenum.equals(num)){
@@ -93,14 +103,21 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public boolean checkBook(int userId, int bookId, int num) {
-        System.out.println(userId+" "+bookId);
-        System.out.println(cartMapper.getQTYbyDoubleId(userId,bookId));
-        return num<=cartMapper.getQTYbyDoubleId(userId,bookId);
+        return num<=Optional.ofNullable(cartMapper.getQTYbyDoubleId(userId,bookId)).orElse(-1)&&num<=1000;
     }
 
 
     @Override
     public boolean updateBook(Integer bookId, Integer userId, int num) {
         return cartMapper.updateOneBook(userId,bookId,num)!=null;
+    }
+
+
+    @Override
+    public boolean checkBookNum(int bookId,int userId, int num) {
+        Book book=bookMapper.findBookById(bookId);
+        int bookQTY= book==null ? -1 : book.getQTY();
+        int aftNum = Optional.ofNullable(cartMapper.getQTYbyDoubleId(userId,bookId)).orElse(-1);
+        return bookQTY >= ((long) aftNum + num)&&(aftNum+num)<=1000;
     }
 }
